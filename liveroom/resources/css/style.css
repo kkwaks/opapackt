@@ -24,6 +24,11 @@ h1 {
 	margin: 10px 0;
 }
 
+h2 {
+    font-size: 22px;
+    margin: 0px;
+}
+
 h1, h2 {
 	font-weight: 300;
 	color: #333;
@@ -35,6 +40,10 @@ h1, h2, h3 {
 
 a {
 	color: #3080c8;
+}
+
+body, p, li, input, button, select, textarea, .navbar-search .search-query {
+    font-family: "Lucida Grande","Helvetica Neue",helvetica,verdana,sans-serif;
 }
 
 form.section-block, .page-header, li.message, .threads > li, li.comment, .add_thread, .add_new_comment, .add_new_comment_box, .section-block-inner {
@@ -194,231 +203,41 @@ ul.comments {
 	border-top: 1px solid #ddd;
 }
 
-
-/** Login form */
-*,
-*:after,
-*:before {
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    -ms-box-sizing: border-box;
-    -o-box-sizing: border-box;
-    box-sizing: border-box;
-    padding: 0;
-    margin: 0;
-}
-
-.clearfix:after {
-    content: "";
-    display: table;
-    clear: both;
-}
-
-
-.login-form {
-    /* Size and position */
-    width: 340px;
-    height: 280px;
-    padding: 15px;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    margin-left: -170px;
-    margin-top: -140px;
-    display: none;
-    z-index: 999;
-
-    /* Styles */
-    background: #fffaf6;
-    border-radius: 4px;
-    color: #7e7975;
-    box-shadow:
-        0 2px 2px rgba(0,0,0,0.2),        
-        0 1px 5px rgba(0,0,0,0.2),        
-        0 0 0 12px rgba(255,255,255,0.4); 
-}
-
-.login-form h1 {
-    font-size: 15px;
-    font-weight: bold;
-    color: #bdb5aa;
-    padding-bottom: 8px;
-    border-bottom: 1px solid #EBE6E2;
-    text-shadow: 0 2px 0 rgba(255,255,255,0.8);
-    box-shadow: 0 1px 0 rgba(255,255,255,0.8);
-}
-
-.login-form h1 .log-in,
-.login-form h1 .sign-up {
-    display: inline-block;
-    text-transform: uppercase;
-}
-
-.login-form h1 .log-in {
-    color: #6c6763;
-    padding-right: 2px;
-}
-
-.login-form h1 .sign-up {
-    color: #ffb347;
-    padding-left: 2px;
-}
-
-.login-form .float {
-    width: 50%;
-    float: left;
-    padding-top: 15px;
-    border-top: 1px solid rgba(255,255,255,1);
-}
-
-.login-form .float:first-of-type {
-    padding-right: 5px;
-}
-
-.login-form .float:last-of-type {
-    padding-left: 5px;
-}
-
-.login-form label {
-    display: block;
-    padding: 0 0 5px 2px;
+.pointer tr {
     cursor: pointer;
-    text-transform: uppercase;
-    font-weight: 400;
-    text-shadow: 0 1px 0 rgba(255,255,255,0.8);
-    font-size: 11px;
 }
 
-.login-form label i {
-    margin-right: 5px; /* Gap between icon and text */
-    display: inline-block;
-    width: 10px;
+.page-header {
+    margin-top: 0px;
 }
 
-.login-form input[type=text],
-.login-form input[type=password] {
-    font-family: 'Lato', Calibri, Arial, sans-serif;
-    font-size: 13px;
-    font-weight: 400;
-    display: block;
-    width: 100%;
-    padding: 5px;
-    margin-bottom: 5px;
-    border: 3px solid #ebe6e2;
+.postdate {
+    color: #b7b7b7;
+    line-height: 16px;
+    font-size: 12px;
+    font-family: "verdana";
+    margin-bottom: 7px;
+}
+
+.form-signin {
+    max-width: 320px;
+    padding: 19px 29px 29px;
+    margin: 0 auto 20px;
+    background-color: #fff;
+    border: 1px solid #e5e5e5;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
     border-radius: 5px;
-    -webkit-transition: all 0.3s ease-out;
-    -moz-transition: all 0.3s ease-out;
-    -ms-transition: all 0.3s ease-out;
-    -o-transition: all 0.3s ease-out;
-    transition: all 0.3s ease-out;
+    -webkit-box-shadow: 0 1px 2px rgba(0,0,0,.05);
+    -moz-box-shadow: 0 1px 2px rgba(0,0,0,.05);
+    box-shadow: 0 1px 2px rgba(0,0,0,.05);
 }
 
-.login-form input[type=text]:hover,
-.login-form input[type=password]:hover {
-    border-color: #CCC;
+.login-info {
+    color: white;
+    margin-top: 5px;
 }
 
-.login-form label:hover ~ input {
-    border-color: #CCC;
+.login-info a{
+    color: #b7b7b7;
 }
-
-.login-form input[type=text]:focus,
-.login-form input[type=password]:focus {
-    border-color: #BBB;
-    outline: none; /* Remove Chrome's outline */
-}
-
-.login-form input[type=submit],
-.login-form .log-facebook {
-    /* Size and position */
-    width: 49%;
-    height: 38px;
-    float: left;
-    position: relative;
-
-    /* Styles */
-    box-shadow: inset 0 1px rgba(255,255,255,0.3);
-    border-radius: 3px;
-    cursor: pointer;
-
-    /* Font styles */
-    font-family: 'Lato', Calibri, Arial, sans-serif;
-    font-size: 14px;
-    line-height: 38px; /* Same as height */
-    text-align: center;
-    font-weight: bold;
-}
-
-.login-form input[type=submit] {
-    margin-left: 1%;
-    background: #fbd568; /* Fallback */
-    background: -moz-linear-gradient(#fbd568, #ffb347);
-    background: -ms-linear-gradient(#fbd568, #ffb347);
-    background: -o-linear-gradient(#fbd568, #ffb347);
-    background: -webkit-gradient(linear, 0 0, 0 100%, from(#fbd568), to(#ffb347));
-    background: -webkit-linear-gradient(#fbd568, #ffb347);
-    background: linear-gradient(#fbd568, #ffb347);
-    border: 1px solid #f4ab4c;
-    color: #996319;
-    text-shadow: 0 1px rgba(255,255,255,0.3);
-}
-
-.login-form .log-facebook {
-    margin-right: 1%;
-    background: #34a5cf; /* Fallback */
-    background: -moz-linear-gradient(#34a5cf, #2a8ac4);
-    background: -ms-linear-gradient(#34a5cf, #2a8ac4);
-    background: -o-linear-gradient(#34a5cf, #2a8ac4);
-    background: -webkit-gradient(linear, 0 0, 0 100%, from(#34a5cf), to(#2a8ac4));
-    background: -webkit-linear-gradient(#34a5cf, #2a8ac4);
-    background: linear-gradient(#34a5cf, #2a8ac4);
-    border: 1px solid #2b8bc7;
-    color: #ffffff;
-    text-shadow: 0 -1px rgba(0,0,0,0.3);
-    text-decoration: none;
-}
-
-.login-form input[type=submit]:hover,
-.login-form .log-facebook:hover {
-    box-shadow: 
-        inset 0 1px rgba(255,255,255,0.3), 
-        inset 0 20px 40px rgba(255,255,255,0.15);
-}
-
-.login-form input[type=submit]:active,
-.login-form .log-facebook:active{
-    top: 1px;
-}
-
-/* Fallback fro broswers that don't support box shadows */
-.no-boxshadow .login-form input[type=submit]:hover {
-    background: #ffb347;
-}
-
-.no-boxshadow .login-form .log-facebook:hover {
-    background: #2a8ac4;
-}
-
-.login-form p:last-of-type {
-    clear: both;    
-}
-
-.login-form .opt {
-    text-align: right;
-    margin-right: 3px;
-}
-
-.login-form label[for=showPassword] {
-    display: inline-block;
-    margin-bottom: 10px;
-    font-size: 11px;
-    font-weight: 400;
-    text-transform: capitalize;
-}
-
-.login-form input[type=checkbox] {
-    vertical-align: middle;
-    margin: -1px 5px 0 1px;
-}
-
-

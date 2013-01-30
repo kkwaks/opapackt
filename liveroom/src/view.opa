@@ -1,10 +1,9 @@
-import stdlib.themes.bootstrap
+import stdlib.themes.{bootstrap, bootstrap.responsive}
 import stdlib.web.client
 import stdlib.tools.markdown
 
 module View {
 	function navbar() { 
-		<>{Login.login_form()} 
 		<div id=#title class="navbar navbar-fixed-top">
       		<div class=navbar-inner> 
       			<div class="container-fluid">
@@ -13,37 +12,48 @@ module View {
       				</a>
       				<div id=#login_panel class="pull-right">
       				{if(Login.logged()){
-      					<span> welcom {Login.get_user()}</span> 
-      					<button id=#btn_logout class="btn btn-success" onclick={Login.logout}>Logout</button>
+	      				<div class="login-info">
+	      					<span class="icon icon-white icon-user"> </span> {Login.get_user()}
+	      					<div style="text-align:right">
+	      						<a href="#" onclick={Login.logout}>logout</a>
+	      					</div>
+	      				</div>
       				}else{
-      					<button id=#btn_login class="btn btn-success" onclick={Login.show_login}>Login</button>	
+      					<button id=#btn_login class="btn btn-success" onclick={function(_){Client.goto("/login")}}>Sign in</button>	
       				}}      					
       				</div>
       			</div>
       		</div>
     	</div>
-    	</>
 	}
 
-	function topic_list(){
-		row = 0;
-		Iter.map(function(t){
-			row   = row + 1;
-			style = if(mod(row,2) == 0) "index-subscribed" else "index-unsubscribed"
-
-			<tr class="{style}">
-		    	<td align="left">
-		    		<span class="icon icon-bookmark"></span>
-		    		<a href="/detail/{t.id}">{t.title}</a>
-		    	</td>
-		    	<td align="center">2</td>
-		    	<td align="center">{t.author}</td>
-		    	<td align="center">{time_diff(t.lastupdate)}</td>
-		    </tr>
-		},Model.query(0))
-	}
-
+	/**
+	* The main page of liveroom, listing topics that have been discussed recently.
+	*/
 	function main(){
+		
+		/**
+		* list topics
+		*/
+		function list_topics(topics){
+			row = 0;
+			Iter.map(function(t){
+				row   = row + 1;
+				style = if(mod(row,2) == 0) "index-subscribed" else "index-unsubscribed"
+
+				<tr class="{style}">
+			    	<td align="left">
+			    		<span class="icon icon-bookmark"></span>
+			    		<a href="/detail/{t.id}">{t.title}</a>
+			    	</td>
+			    	<td align="center">{t.author}</td>
+			    	<td align="center">{t.reply}</td>
+			    	<td align="center">{t.lastposter}</td>
+			    	<td align="center">{time_tag(t.lastupdate)}</td>
+			    </tr>
+			},topics)
+		}
+
 		xhtml = <>
 			{navbar()}
 	    	<div class="container-fluid">
@@ -61,12 +71,13 @@ module View {
 		    				<thead>
 		    					<tr>
 		    						<th align="left">Topic</th>
+		    						<th align="center">Author</th>
 		    						<th align="center">Reply</th>
 		    						<th align="center">Last Poster</th>
 		    						<th align="center">Last Update</th>
 		    					</tr>
 		    				</thead>
-		    				<tbody id=#topic_list>{topic_list()}</tbody>
+		    				<tbody id=#topic_list>{list_topics(Model.query(0))}</tbody>
 		    			</table>
 	    			</div>
 	    		</div>
@@ -76,9 +87,10 @@ module View {
 	}
 
 	function add_topic(_){
+		author = Login.get_user();
 		message = {
-			author: "winbomb",
-			content: Dom.get_value(#new_topic_content),
+			~author,
+			content:  Dom.get_value(#new_topic_content),
 			posttime: get_now(),
 			comments: []
 		}
@@ -87,12 +99,17 @@ module View {
 			posttime: get_now(),
 			lastupdate: get_now(),
 			title: Dom.get_value(#new_topic_text),
-			author: "winbomb",
+			~author,
+			lastposter: author,
+			reply: 0,
 			messages: StringMap.add("0", message, StringMap.empty)
 		}
 
-		Model.insert(topic)
-		Client.goto("/")
+		match(Model.insert(topic)){
+		case  {true}: Client.goto("/")
+		case {false}: void
+		}
+		
 	}
 
 	function new_topic() {
@@ -112,7 +129,7 @@ module View {
     						<div class="actions">
     							<button class="btn btn-primary" onclick={add_topic}>Create</button>
     							<button class="btn btn-primary" onclick={preview}>Preview</button>
-    							<button class="btn btn-primary">Cancle</button>
+    							<button class="btn btn-primary" onclick={function(_){Client.goto("/")}}>Cancle</button>
     						</div>
     						<div id=#preview_area class="preview" style="display:none"></div>
     					</fieldset>
@@ -130,9 +147,9 @@ module View {
 
 	function post_message(id)(_) {
 		message = {
-			author: "tester",
-			content: Dom.get_value(#new_message_content),
-			posttime: 0,
+			author:   Login.get_user(),
+			content:  Dom.get_value(#new_message_content),
+			posttime: get_now(),
 			comments: []
 		}
 		Model.post_message(id,message)
@@ -140,9 +157,9 @@ module View {
 
 	function post_comment(id, key)(_) {
 		comment = {
-			author: "texter",
-			content: Dom.get_value(#new_message_content),
-			posttime: 0
+			author:   Login.get_user(),
+			content:  Dom.get_value(#new_message_content),
+			posttime: get_now()
 		}
 		Model.post_comment(id, key, comment)
 	}
@@ -175,7 +192,7 @@ module View {
     		message = <li class="section-block message">
     			<div class="base-wrapper">
     				<div class="author">{msg.author}</div>
-    				<div class="postdate">Posted {time_diff(msg.posttime)}</div>
+    				<div class="postdate">Posted {time_tag(msg.posttime)}</div>
     				<div class="base-content">{Markdown.xhtml_of_string(Markdown.default_options, msg.content)}</div>
     			</div>
     			<div class="message_comments">
@@ -190,7 +207,7 @@ module View {
     						<li class="comment">
     							<div class="base-wrapper">
     								<div class="author">{comment.author}</div>
-    								<div class="postdate">{time_diff(comment.posttime)}</div>
+    								<div class="postdate">{time_tag(comment.posttime)}</div>
     								<div class="base-content">{Markdown.xhtml_of_string(Markdown.default_options, comment.content)}</div>
     							</div>
     						</li>

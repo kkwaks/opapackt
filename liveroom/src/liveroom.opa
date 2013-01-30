@@ -1,8 +1,9 @@
 import stdlib.apis.mongo
 
 database liveroom {
-	int /next_id
+	int     /next_id
 	Topic.t /topics[{id}]
+	User.t  /users[{email}]
 }
 my_db = MongoConnection.openfatal("default")
 
@@ -31,7 +32,7 @@ function to_date(ms){
 	Date.milliseconds(ms)
 }
 
-function time_diff(t){
+function time_tag(t){
 	now = Date.in_milliseconds(Date.now()) / 1000
 	t   = t / 1000
 	if(now - t < 60) "just now" else {
@@ -45,8 +46,13 @@ function time_diff(t){
 function dispatch(url){
 	match(url){
 	case {path:[] ...}: 				View.main()
-	case {path:["new_topic"] ... }:		View.new_topic()
+	case {path:["new_topic"] ... }:		if(Login.logged()) View.new_topic() else Login.page()
 	case {path:["detail",id|_] ...}:    View.detail(Int.of_string(id))
+	case {path:["login"] ...}:			Login.page()
+	case {path:["connect"] ...}:{
+		data = List.head(url.query).f2
+		Login.connect(data)
+	} 		
 	case {path:_ ...}:					View.main()
 	}
 }
@@ -54,6 +60,7 @@ function dispatch(url){
 Server.start(Server.http, [
 	{resources: @static_resource_directory("resources")},
 	{register: [
+		{doctype: {html5}},
 		{css: ["/resources/css/style.css"]}
 	]},
 	{~dispatch}
