@@ -1,0 +1,13 @@
+body{
+ background-color: whitesomke;
+}
+
+#gamecanvas {
+ background-color: #FFF;
+ border: 2px solid blue;
+ position: absolute;
+ top: 50%;
+ left: 50%;
+ margin-left: -260px;
+ margin-top: -310px;
+}
