@@ -106,8 +106,8 @@ module View {
 		}
 
 		match(Model.insert(topic)){
-		case  {true}: Client.goto("/")
-		case {false}: void
+		  case {success: _}: Client.goto("/")
+		  case {failure: f}: show_alert("{f}")
 		}
 		
 	}
@@ -128,7 +128,7 @@ module View {
     						</div>
     						<div class="actions">
     							<button class="btn btn-primary" onclick={add_topic}>Create</button>
-    							<button class="btn btn-primary" onclick={preview}>Preview</button>
+    							<button class="btn btn-primary" onclick={preview("preview_area", Dom.get_value(#new_topic_content))}>Preview</button>
     							<button class="btn btn-primary" onclick={function(_){Client.goto("/")}}>Cancle</button>
     						</div>
     						<div id=#preview_area class="preview" style="display:none"></div>
@@ -140,9 +140,9 @@ module View {
     	Resource.html("Live Room", xhtml)
 	}
 
-	client function preview(_) {
-		#preview_area = Markdown.xhtml_of_string(Markdown.default_options, Dom.get_value(#new_topic_content))
-		Dom.show(#preview_area)
+	client function preview(id, content)(_) {
+		#{id} = Markdown.xhtml_of_string(Markdown.default_options, content)
+		Dom.show(#{id})
 	}
 
 	function post_message(id)(_) {
@@ -165,20 +165,22 @@ module View {
 	}
 
 	function hide_comment_box(key)(_){
-		Dom.remove_content(#{"add_new_comment_{key}"})
+		Dom.hide(#{"add_new_comment_{key}"})
 	}
 
 	function show_comment_box(id, key)(_){
 		xhtml = <>
-			<div class="section-block">
-    			<label>New message</label>
+			<div class="section-block section-block-inner">
+    			<label>New Comment</label>
     			<div class="row-fluid markdown-wrapper">
-    				<textarea id=#new_message_content class="markdown-content" rows="11" placeholder="Enter your message here..."></textarea>
+    				<textarea id=#{"new_comment_content_{key}"} class="markdown-content" rows="11" placeholder="Enter your comment here..."></textarea>
     			</div>
     			<div class="actions">
     				<button class="btn btn-info" onclick={hide_comment_box(key)}>Cancel</button>
+    				<button class="btn btn-info" onclick={preview("preview_area_{key}", Dom.get_value(#{"new_comment_content_{key}"}))} >Preview</button>
     				<button class="btn btn-info" onclick={post_comment(id,key)}>Post</button>
     			</div>
+    			<div id=#{"preview_area_{key}"} class="preview" style="display:none"></div>
     		</div>
     	</>
 
@@ -236,19 +238,27 @@ module View {
     				</div>
     				<ul class="unstyled messages" id=#messagelist onready={show_messages(id, topic.messages)}></ul>
     				{if(Login.logged()){
-    					<div class="section-block">
+    					<div class="section-block section-block-inner">
     						<label>New message</label>
     						<div class="row-fluid markdown-wrapper">
     							<textarea id=#new_message_content class="markdown-content" rows="11" placeholder="Enter your message here..."></textarea>
     						</div>
     						<div class="actions">
-    							<a href="#" onclick={post_message(id)} class="btn btn-info">Post</a>
+    							<button class="btn btn-info" onclick={function(_){Client.goto("/")}} >Back</button>
+    							<button class="btn btn-info" onclick={preview("preview_area", Dom.get_value(#new_message_content))} >Preview</button>
+    							<button class="btn btn-info" onclick={post_message(id)} >Post</button>
     						</div>
+    						<div id=#preview_area class="preview" style="display:none"></div>
     					</div>	
     				}else <></>}    				
     			</div>
     		</div>
 		</>
 		Resource.html("Live Room", xhtml)
+	}
+
+	client function show_alert(msg){
+		//todo
+		void;
 	}
 }

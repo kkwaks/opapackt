@@ -23,21 +23,18 @@ type Topic.t = {
 }
 
 type User.t = {
-	string email,
-	string nickname,
+	string username,
 	string password
 }
 
 module Model {
+	/** inert topic to database */
 	function insert(topic){
 		match(next_id()){
-		case {none}: {
-			jlog("Failed to get next id, insert failed!")
-			{false}
-		}
+		case {none}: {failure: "Failed to generate next id!"}
 		case {some:id}:{
 			/liveroom/topics[~{id}] <- {topic with ~id}
-			{true}	
+			{success: id}	
 		}}
 	}
 
@@ -64,18 +61,12 @@ module Model {
 		/liveroom/topics[~{id}]/messages[key]/comments <+ comment
 	}
 
-	function auth(email,password){
-		/** match(?/liveroom/users[~{email}]){
-		case {none}: {none}
-		case {some:user}: {
-			if(user.password == password) some(user) else {none}
-		}} */
-
-		user = {
-		 email: "li.wenbo@whu.edu.cn",
-		 nickname: Random.string(8),
-		 password: ""
+	/**
+	 * Authorization. this is fake, for real application, password should be encrypoed.
+	 */
+	function auth(username,password){
+		if(String.is_blank(username) || String.is_blank(password)) {none} else {
+			some(~{username, password})
 		}
-		some(user)		
 	}
 }

@@ -34,7 +34,7 @@ module Login {
 			<div class="container">
 		      <div class="form-signin">
 		        <h2 class="form-signin-heading">Please sign in</h2>
-		        <input id=#email type="text" class="input-block-level" placeholder="Email address">
+		        <input id=#username type="text" class="input-block-level" placeholder="Username">
 		        <input id=#password type="password" class="input-block-level" placeholder="Password">
 		        <label class="checkbox">
 		          <input type="checkbox" value="remember-me"> Remember me
@@ -50,35 +50,32 @@ module Login {
 	function show_login(_){ Dom.show(#login_form) }
 
 	function login(_) {
-		email = Dom.get_value(#email)
+		username = Dom.get_value(#username)
 		password = Dom.get_value(#password)
-		match(Model.auth(email,password)){
-		case  {none}: {
-			jlog("auth failed!")
-			Client.reload()
-		}
-		case {some:user}: {
-			UserContext.change(function(_){~{user}},state)
-			Client.goto("/")
-		}}
+		match(Model.auth(username,password)){
+		case {none}: Client.reload()
+	  	case {some:user}: {
+	      	UserContext.change(function(_){~{user}},state)
+	      	Client.goto("/")
+	  	}}
 	}
 
 	function logout(_){
-		UserContext.change(function(_){{unlogged}},state)
+		UserContext.remove(state)
 		Client.reload()
 	}
 
 	function logged() {
-		match(UserContext.execute(identity,state)){
+		match(UserContext.get(state)){
 		case {unlogged}: {false}
 		case {user:_}  : {true}
 		}
 	}
 
 	function get_user() {
-		match(UserContext.execute(identity,state)){
+		match(UserContext.get(state)){
 		case {unlogged}: "anonymous"
-		case ~{user}:    user.nickname
+		case ~{user}:    user.username
 		}
 	}
 

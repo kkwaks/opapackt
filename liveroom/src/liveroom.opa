@@ -3,7 +3,6 @@ import stdlib.apis.mongo
 database liveroom {
 	int     /next_id
 	Topic.t /topics[{id}]
-	User.t  /users[{email}]
 }
 my_db = MongoConnection.openfatal("default")
 
@@ -24,14 +23,13 @@ function next_id(){
 	}}
 }
 
-function get_now() {
-	Date.in_milliseconds(Date.now())
-}
+/** Get the current time in milliseconds */
+function get_now() { Date.in_milliseconds(Date.now()) }
 
-function to_date(ms){
-	Date.milliseconds(ms)
-}
+/** Convert milliseconds to date */
+function to_date(ms){ Date.milliseconds(ms) }
 
+/** get the time tag */
 function time_tag(t){
 	now = Date.in_milliseconds(Date.now()) / 1000
 	t   = t / 1000
