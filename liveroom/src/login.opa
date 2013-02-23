@@ -5,9 +5,9 @@ type Login.user = {unlogged} or {User.t user}
 
 module Login {
 	config = {
-		app_id:  "121883501319223",
-		api_key: "121883501319223",
-		app_secret: "fd23bd0b580af141cf76f428e0e01222"
+		app_id:  "***************",
+		api_key: "***************",
+		app_secret: "*******************************"
 	}
 	
 	FBA 	  = FbAuth(config)
