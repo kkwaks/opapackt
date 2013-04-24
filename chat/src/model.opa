@@ -6,10 +6,10 @@ module Model {
 	server private Network.network(message) room = Network.empty();
 
 	@async function broadcast(message) {
-    	Network.broadcast(message, room);
+    	Network.broadcast(message, room)
   	}
-
-  	function register(callback) {
-  		Network.add_callback(callback,room);
-  	}
+	
+	function join(callback) {
+		Network.add_callback(callback, room)
+	}
 }

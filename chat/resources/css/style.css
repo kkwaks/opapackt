@@ -1,8 +1,8 @@
 #logo {
  background: url("/resources/img/opa-logo.png") no-repeat scroll 0 0 transparent;
  height: 32px;
+ margin: 10px 0 5px;
  width: 61px;
- margin: 10px 0px 5px 20px;
 }
 
 #conversation {
@@ -40,8 +40,8 @@
  color:#666;
 }
 
-.input-append {
-  margin: 6px 0px 6px 20px;
+#entry {
+  margin-top: 6px;
 }
 
 #footer {

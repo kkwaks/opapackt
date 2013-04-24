@@ -1,0 +1,1 @@
+{"name":"link","version":"1.1.1","main":"chat.exe","dependencies":{"opabsl.opp":"1.1.1","opa-js-runtime-cps":"1.1.1","chat.controller.opx":"1.1.1"}}

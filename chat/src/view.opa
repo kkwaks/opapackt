@@ -1,5 +1,3 @@
-import stdlib.themes.bootstrap.css
-
 module View {
 	function broadcast(user)(_){
 		text = Dom.get_value(#entry);
