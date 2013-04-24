@@ -1,3 +1,3 @@
-The Chat example of Opa Application Development.
-make
-make run
+#The Chat example of Opa Application Development.
+$ make
+$ make run
