@@ -1,1 +1,0 @@
-opa plugins/Preloader.js src/*.opa -o pacman.js

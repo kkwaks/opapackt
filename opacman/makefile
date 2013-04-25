@@ -1,19 +1,31 @@
-OPA=opa
-SRC_DIR=src
-SRC_FILES=$(wildcard $(SRC_DIR)/*.opa)
-PLUGIN_DIR=plugins
-PLUGIN_FILES=$(PLUGIN_DIR)/Preloader.js
-PLUGIN_OPT=--js-bypass-syntax jsdoc
-BIN_DIR=bin
-EXEC_NAME=opacman.exe
-EXEC=$(BIN_DIR)/$(EXEC_NAME)
+########################################
+# USER VARIABLES
+EXE = opacman.exe
+ifdef SystemRoot
+	RUN_CMD = $(EXE)
+else
+	RUN_CMD = ./$(EXE)
+endif
 
-default:
-	clear
-	$(OPA) $(PLUGIN_FILES) $(PLUGIN_OPT) $(SRC_FILES) -o $(EXEC)
-run:
-	clear
-	$(BIN_DIR)/$(EXEC_NAME)
-clean:
-	rm -frv $(BUILD_DIRS)
-	rm -frv $(BIN_DIR)
+PACKNAME =
+SRC =
+PCKDIR = ./plugins/
+PCK =
+PLUGIN =
+PLUGINDIR =
+OTHER_DEPENDS = resources/*
+CONF_FILE = opa.conf
+
+#Compiler variables
+OPACOMPILER ?= opa
+FLAG = --opx-dir _build $(PCKDIR)Preloader.js
+PORT = 8080
+
+RUN_OPT =
+
+default: exe
+
+run: exe
+	$(RUN_CMD) $(RUN_OPT) || true
+
+include Makefile.common
