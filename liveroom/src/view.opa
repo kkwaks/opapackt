@@ -107,7 +107,7 @@ module View {
 
 		match(Model.insert(topic)){
 		  case {success: _}: Client.goto("/")
-		  case {failure: f}: show_alert("{f}")
+		  case {failure: f}: Client.alert("{f}")
 		}
 		
 	}
@@ -255,10 +255,5 @@ module View {
     		</div>
 		</>
 		Resource.html("Live Room", xhtml)
-	}
-
-	client function show_alert(msg){
-		//todo
-		void;
 	}
 }

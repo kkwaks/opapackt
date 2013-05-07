@@ -98,19 +98,19 @@ module Login {
 	}
 
 	function connect(data) {
-		/** xhtml = match (FBA.get_token_raw(data, redirect)) {
-		case {~token}: {
-			jlog("ok!")
-			match(get_name(token)) {
-		    	case {some: name}: show_box("success", "Hello, {name}! This is the list of your friends:", <></>)
-		    	default: show_box("error", "Error getting your name", <></>)
-		    }
-		}			
-		case ~{error}: {
-			jlog("error {error.error_description}")
-			show_box("error", error.error, <>{error.error_description}</>)
-		}} */
-
-		Resource.html("connect",<></>)
+		match (FBA.get_token_raw(data, redirect)) {
+			case {~token}: {
+				match(get_name(token)) {
+		    		case {some: name}: {
+						user = {username: name, password: ""}
+						UserContext.change(function(_){~{user}}, state)
+						View.main()	
+  					}
+		    		default: Resource.html("Error", <><h1>Error getting your name</h1></>);
+		    	}
+			}			
+			case ~{error}: Resource.html("Error", <><h1>{error.error} {error.error_description}</h1></>)
+			default: Resource.html("Error",<><h1>Unknown Error</h1></>)
+		}		 
 	}
 }
