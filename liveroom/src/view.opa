@@ -48,12 +48,12 @@ module View {
 			    	</td>
 			    	<td align="center">{t.author}</td>
 			    	<td align="center">{t.reply}</td>
-			    	<td align="center">{t.lastposter}</td>
+			    	<td align="center" class="hidden-phone">{t.lastposter}</td>
 			    	<td align="center">{time_tag(t.lastupdate)}</td>
 			    </tr>
 			},topics)
 		}
-
+		header = <><meta name="viewport" content="width=device-width, initial-scale=1.0 user-scalable=no"></>
 		xhtml = <>
 			{navbar()}
 	    	<div class="container-fluid">
@@ -73,7 +73,7 @@ module View {
 		    						<th align="left">Topic</th>
 		    						<th align="center">Author</th>
 		    						<th align="center">Reply</th>
-		    						<th align="center">Last Poster</th>
+		    						<th align="center" class="hidden-phone">Last Poster</th>
 		    						<th align="center">Last Update</th>
 		    					</tr>
 		    				</thead>
@@ -83,7 +83,7 @@ module View {
 	    		</div>
 	    	</div>
 	    </>
-	    Resource.html("Live Room", xhtml)
+	    Resource.full_page("Live Room", xhtml, header, {success}, []) 
 	}
 
 	function add_topic(_){

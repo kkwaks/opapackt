@@ -25,13 +25,13 @@ module Login {
 			<div id=#title class="navbar navbar-fixed-top">
 	      		<div class=navbar-inner> 
 	      			<div class="container-fluid">
-	      				<a href="/" class="brand hidden-phone hidden-tablet">
+	      				<a href="/" class="brand">
 	      					<img alt="Opa" src="/resources/img/opa-logo.png" class="logo">
 	      				</a>
 	      			</div>
 	      		</div>
 	    	</div>
-			<div class="container">
+		<div class="container" style="width:100%;margin-top:15px">
 		      <div class="form-signin">
 		        <h2 class="form-signin-heading">Please sign in</h2>
 		        <input id=#username type="text" class="input-block-level" placeholder="Username">
@@ -44,7 +44,8 @@ module Login {
 		      </div>
     		</div>
 		</>
-		Resource.html("Login",xhtml)
+		header = <><meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"></>
+		Resource.full_page("Login",xhtml, header, {success}, [])
 	}
 
 	function show_login(_){ Dom.show(#login_form) }
