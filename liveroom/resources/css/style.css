@@ -93,7 +93,7 @@ form.section-block, .message_comments, .sidebar .section-block, .threads > li:ho
 }
 
 .navbar .brand {
-	padding: 12px 15px 6px;
+	padding: 12px 20px;
 }
 
 .navbar .logo {
@@ -240,4 +240,9 @@ ul.comments {
 
 .login-info a{
     color: #b7b7b7;
+}
+
+.container-fluid {
+	padding-left: 5px;
+	padding-right: 5px;
 }
